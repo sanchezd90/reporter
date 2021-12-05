@@ -14,7 +14,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import Image from 'next/image'
+import Logo from '../../public/images/mocapp-logo.png'
 
 const useStyles = makeStyles((theme) => ({
   abRoot: {
@@ -156,8 +157,8 @@ export default function PrimarySearchAppBar() {
     root: classes.abRoot    
   }}>
         <Toolbar>          
-        <div style={{marginLeft:'10px'}}>
-            <PeopleAltIcon style={{ fontSize: 50 }}/>
+        <div style={{marginLeft:'10px'}}> 
+          <Image src={Logo} alt="logo-mocapp" width={50} height={50}/>
         </div>                    
           <div className={classes.grow} />
           <div className={classes.title}>            
