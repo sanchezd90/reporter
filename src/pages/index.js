@@ -20,12 +20,25 @@ const useStyles = makeStyles({
     color:'#EF6C33',
     fontWeight:'bolder'
   },
-  button:{
-    backgroundColor:'#EF6C33',
-    color:'white',
-    fontWeight:'bolder'
 
-  }
+  btnGrad: {
+    background: 'linear-gradient(to right, #E44D26 0%, #F16529  51%, #E44D26  100%)',
+    '&:hover': {
+      backgroundPosition: 'right center',
+      color: '#fff',
+      textDecoration: 'none',
+    },
+    margin: '10px',
+    padding: '15px 45px',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    transition: '0.5s',
+    backgroundSize: '200% auto',
+    color: 'white',
+    boxShadow: '0 0 20px #eee',
+    borderRadius: '10px',
+    display: 'block',
+   }  
 });
 
 const Home = () => {
@@ -36,9 +49,9 @@ const Home = () => {
       <div style={{marginTop:'50px'}}>
       <Grid container spacing={3} justifyContent="center">
         <Grid item xs={6}>          
-            <h1 className={classes.title}>Bienvenido a <span className={classes.highlight}>MoCApp</span></h1>          
-            <h2 style={{aligtnText:'center'}}><span className={classes.highlight}>MoCApp</span> es una versión digital de la prueba de rastrillaje cognitivo MoCA.</h2>
-            <h3 style={{marginTop:'50px'}}>Con <span className={classes.highlight}>MoCApp</span> podés: </h3>
+            <h1 className={classes.title}>Bienvenido a <span className={classes.highlight}>Reporter</span></h1>          
+            <h2 style={{aligtnText:'center'}}><span className={classes.highlight}>Reporter</span> es una versión digital de la prueba de rastrillaje cognitivo MoCA.</h2>
+            <h3 style={{marginTop:'50px'}}>Con <span className={classes.highlight}>Reporter</span> podés: </h3>
             <div>
                 <p className={classes.paragraph}><CreateIcon/><span style={{marginLeft:'15px', height:'100%'}}>Anotar las respuestas del evaluado y obtener corrección inmediata</span></p>
                 <p className={classes.paragraph}><FunctionsIcon/><span style={{marginLeft:'15px', height:'100%'}}>Calcular puntajes brutos y estandarizados</span></p>
@@ -48,8 +61,8 @@ const Home = () => {
             
             <div style={{marginTop:'50px'}}>
             <Grid container justifyContent="space-evenly">
-              <Button variant="contained" className={classes.button}>Comenzar</Button>
-              <Button variant="contained" className={classes.button}>Registrarme</Button>
+              <Button variant="contained" className={classes.btnGrad}>Comenzar</Button>
+              <Button variant="contained" className={classes.btnGrad}>Registrarme</Button>
             </Grid>
             </div>
         </Grid>          

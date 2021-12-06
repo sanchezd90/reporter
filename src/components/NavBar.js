@@ -15,7 +15,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Image from 'next/image'
-import Logo from '../../public/images/mocapp-logo.png'
+import Logo from '../../public/images/reporter-logo.png'
 
 const useStyles = makeStyles((theme) => ({
   abRoot: {
