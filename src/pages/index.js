@@ -18,7 +18,8 @@ const useStyles = makeStyles({
   },
   highlight: {
     color:'#EF6C33',
-    fontWeight:'bolder'
+    fontWeight:'bolder',
+    fontSize:'110%',
   },
 
   btnGrad: {
