@@ -5,14 +5,19 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-const TestTable = () => {
+const TestTable = ({tests}) => {
   return (    
     <TableContainer>
       <Table>        
         <TableBody>
-          <TableRow>
-            <TableCell>a</TableCell>
-          </TableRow>
+          {tests.map((test,index)=>{
+            return(
+            <TableRow key={index}>
+              <TableCell>{test.fullName}</TableCell>
+            </TableRow>
+            )
+          }
+          )}          
         </TableBody>
       </Table>
     </TableContainer>

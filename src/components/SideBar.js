@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => ({
     boxShadow: '0 0 20px #eee',
     borderRadius: '10px',
     display: 'block',
+    width: '80%'
    }  
 }));
 
