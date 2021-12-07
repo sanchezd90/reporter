@@ -30,6 +30,7 @@ const SideBar = () => {
     <Grid container>      
         <Button variant="contained" className={classes.btnGrad}>Pruebas</Button>
         <Button variant="contained" className={classes.btnGrad}>Informes</Button>     
+        <Button variant="contained" className={classes.btnGrad}>Recursos</Button>     
     </Grid>
       </div>
   );
