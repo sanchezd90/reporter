@@ -54,7 +54,7 @@ const Home = () => {
             </h1>
             <h2 style={{ aligtnText: "center" }}>
               <span className={classes.highlight}>Reporter</span> es una herramienta
-              digital para calcular puntajes de pruebas cognitivas y generar informes.
+              digital que te ayuda con los procesos de evaluación neurocognitiva.
             </h2>
             <h3 style={{ marginTop: "50px" }}>
               Con <span className={classes.highlight}>Reporter</span> podés:{" "}
@@ -75,14 +75,14 @@ const Home = () => {
               <p className={classes.paragraph}>
                 <FolderSpecialIcon />
                 <span style={{ marginLeft: "15px", height: "100%" }}>
-                  Almacenar datos sobre tus evaluaciones
+                  Ordenar y almacenar información sobre tus evaluaciones
                 </span>
               </p>
             </div>
 
             <div style={{ marginTop: "50px" }}>
               <Grid container justifyContent="space-evenly">
-                <Link href="/pruebas">
+                <Link href="/calculadora">
                   <Button variant="contained" className={classes.btnGrad}>
                     Comenzar
                   </Button>
