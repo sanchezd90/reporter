@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 })
 
 
-const TestTable = ({tests}) => {
+const TestTable = ({tests, changeActive}) => {
   const classes = useStyles();
   return (    
     <TableContainer>
@@ -41,7 +41,7 @@ const TestTable = ({tests}) => {
             return(
             <TableRow key={index}>
               <TableCell className={classes.root}>
-                <Button className={classes.btn}>{test.fullName}</Button>
+                <Button className={classes.btn} onClick={()=>changeActive(test.test_id)}>{test.fullName}</Button>
                 </TableCell>
             </TableRow>
             )

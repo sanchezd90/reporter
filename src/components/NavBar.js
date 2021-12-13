@@ -16,6 +16,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Image from 'next/image'
 import Logo from '../../public/images/reporter-logo.png'
+import Link from "next/link";
 
 const useStyles = makeStyles((theme) => ({
   abRoot: {
@@ -158,7 +159,9 @@ export default function PrimarySearchAppBar() {
   }}>
         <Toolbar>          
         <div style={{marginLeft:'10px'}}> 
-          <Image src={Logo} alt="logo-mocapp" width={50} height={50}/>
+        
+          <Image src={Logo} alt="logo-reporter" width={50} height={50}/>
+        
         </div>                    
           <div className={classes.grow} />
           <div className={classes.title}>            

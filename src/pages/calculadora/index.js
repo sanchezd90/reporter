@@ -3,6 +3,7 @@ import axios from "axios";
 import Layout from "../../components/layout";
 import { Grid } from "@material-ui/core";
 import TestTable from "../../components/TestTable";
+import FormBox from "../../components/FormBox";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 const Calculadora = () => {
   const classes = useStyles();
   const [tests, setTests] = useState([]);
+  const [activeTest, setActiveTest] = useState('')
 
   const fetchTests = async () => {
     try {
@@ -44,7 +46,10 @@ const Calculadora = () => {
           <h2 className={classes.header}>Calculadora</h2>
           <Grid container>
             <Grid item xs={5}>
-              <TestTable tests={tests} />
+              <TestTable tests={tests} changeActive={setActiveTest}/>
+            </Grid>
+            <Grid item xs={5}>
+              <FormBox activeTest={activeTest}/>
             </Grid>
           </Grid>
         </Grid>
