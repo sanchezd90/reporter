@@ -35,7 +35,7 @@ const Calculadora = () => {
   const classes = useStyles();
   const [tests, setTests] = useState([]);
   const [activeTest, setActiveTest] = useState("");
-  const [age, setAge] = useState(0);
+  const [age, setAge] = useState(16);
   const [education, setEducation] = useState(0);
   const [sex, setSex] = useState(1);
 
@@ -54,6 +54,21 @@ const Calculadora = () => {
     fetchTests();
   }, []);
 
+  const handleAge = () => {
+    if(age<16){
+      setAge(16)  
+    }else if(age>130){
+      setAge(130) 
+    }
+  }
+  const handleEducation = () => {
+    if(education<0){
+      setEducation(0)  
+    }else if(education>30){
+      setEducation(30) 
+    } 
+  }
+
   return (
     <div>
       <Layout>
@@ -69,8 +84,9 @@ const Calculadora = () => {
                   shrink: true,
                 }}
                 variant="outlined"
-                value={age}
+                value={age}                
                 onChange={(e)=>setAge(e.target.value)}
+                onBlur={()=>handleAge()}                
               />
             </Grid>
             <Grid item>
@@ -84,6 +100,7 @@ const Calculadora = () => {
                 variant="outlined"
                 value={education}
                 onChange={(e)=>setEducation(e.target.value)}
+                onBlur={()=>handleEducation()}      
               />
             </Grid>
             <Grid item>
