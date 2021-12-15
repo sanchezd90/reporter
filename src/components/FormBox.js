@@ -98,7 +98,7 @@ const FormBox = ({activeTest, education, age, sex}) => {
               setFields(test.fields)
               const dataObject = {};
               test.fields.map(field=>{
-                dataObject[field]=null
+                dataObject[field]=''
               })
               setData(dataObject)
               const normsData = []
@@ -150,6 +150,10 @@ const FormBox = ({activeTest, education, age, sex}) => {
       setResults(scoresObject)
     }
 
+    const handleInputChange = (field, value) => {
+      setData({...data,[field]:value})
+    }
+
     return (
         <div className={classes.root}>
             <h3>{title}</h3>
@@ -157,7 +161,7 @@ const FormBox = ({activeTest, education, age, sex}) => {
             {fields.map((field,index)=>{
                 return(
                 <div key={index} className={classes.inputField}>
-                   <TextField id={field} type="number" label={formatName(field)} variant="outlined" />
+                   <TextField id={field} type="number" label={formatName(field)} variant="outlined" value={data[field]} onChange={(e)=>handleInputChange(field,e.target.value)}/>
                 </div>)
                 })}
             <Button variant="contained" className={classes.btnGrad} onClick={() => {
