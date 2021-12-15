@@ -40,6 +40,7 @@ const FormBox = ({activeTest, education, age, sex}) => {
     const [data, setData] = useState()
     const [availableNorms,setAvailableNorms] = useState([])
     const [normSource,setNormSource] = useState()
+    const [selectedNorm,setSelectedNorm] = useState()
     const [results, setResults] = useState()
 
     const setIndex = (norms,education,age,sex) => {
@@ -70,10 +71,14 @@ const FormBox = ({activeTest, education, age, sex}) => {
       return [nseIndex, ageIndex, sexIndex, superposicion];
     };
 
-    const getTestNorms = (education, age, sex, availableNorms, source, score) => {
-      const [selectedNorm] = availableNorms.filter((norm) => {
+    const getSelectedNorm = (available_norms,source) => {
+      const [selection] = available_norms.filter((norm) => {
         return norm.norm_id === source;
       });
+      setSelectedNorm(selection)      
+    }
+
+    const getTestNorms = (education, age, sex, availableNorms, source, score) => {      
       let [nseIndex, ageIndex, sexIndex] = setIndex(selectedNorm,education,age,sex);             
       if (selectedNorm.sex.length===1) {
         sexIndex = 0;
@@ -126,6 +131,7 @@ const FormBox = ({activeTest, education, age, sex}) => {
                 }                                               
                 setAvailableNorms(normsData)                
                 setNormSource(norm_id)
+                getSelectedNorm(normsData,norm_id)
                 setShowResults(false)                              
             } catch (error) {
               console.log(error);
@@ -146,7 +152,11 @@ const FormBox = ({activeTest, education, age, sex}) => {
       const scoresObject = {};
       Object.keys(data).map(score=>{
         const norms = getTestNorms(education,age,sex,availableNorms,normSource,score)        
-        scoresObject[score]=Math.round((data[score]-norms[0])/norms[1]*10)/10
+        if(selectedNorm.reverse){
+          scoresObject[score]=Math.round((data[score]-norms[0])/norms[1]*10*-1)/10
+        }else{
+          scoresObject[score]=Math.round((data[score]-norms[0])/norms[1]*10)/10
+        }
       })                 
       setResults(scoresObject)
     }
