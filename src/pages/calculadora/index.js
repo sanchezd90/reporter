@@ -37,7 +37,7 @@ const Calculadora = () => {
   const [activeTest, setActiveTest] = useState("");
   const [age, setAge] = useState(0);
   const [education, setEducation] = useState(0);
-  const [sex, setSex] = useState(2);
+  const [sex, setSex] = useState(1);
 
   const fetchTests = async () => {
     try {
@@ -95,8 +95,8 @@ const Calculadora = () => {
                   value={sex}
                   onChange={(e)=>setSex(e.target.value)}
                 >
-                  <MenuItem value={1}>Masculino</MenuItem>
-                  <MenuItem value={2}>Femenino</MenuItem>                  
+                  <MenuItem value={0}>Masculino</MenuItem>
+                  <MenuItem value={1}>Femenino</MenuItem>                  
                 </Select>
               </FormControl>
             </Grid>
