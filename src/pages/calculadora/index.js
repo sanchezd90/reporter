@@ -95,9 +95,6 @@ const Calculadora = () => {
                   value={sex}
                   onChange={(e)=>setSex(e.target.value)}
                 >
-                  <MenuItem value="">
-                    <em>Seleccionar</em>
-                  </MenuItem>
                   <MenuItem value={1}>Masculino</MenuItem>
                   <MenuItem value={2}>Femenino</MenuItem>                  
                 </Select>
@@ -109,7 +106,7 @@ const Calculadora = () => {
               <TestTable tests={tests} changeActive={setActiveTest} />
             </Grid>
             <Grid item xs={5}>
-              <FormBox activeTest={activeTest} />
+              <FormBox activeTest={activeTest} education={education} age={age} sex={sex}/>
             </Grid>
           </Grid>
         </Grid>

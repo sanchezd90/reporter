@@ -32,15 +32,63 @@ const useStyles = makeStyles({
        },
   })
 
-const FormBox = ({activeTest}) => {
+const FormBox = ({activeTest, education, age, sex}) => {
     const classes = useStyles();
     const [title, setTitle] = useState('')
     const [fields, setFields] = useState([])
     const [showResults,setShowResults] = useState(false)
     const [data, setData] = useState()
+    const [availableNorms,setAvailableNorms] = useState([])
+    const [normSource,setNormSource] = useState()
+    const [results, setResults] = useState()
 
-    const fetchTests = async () => {
-        console.log(activeTest)
+    const setIndex = (norms,education,age,sex) => {
+      let nseIndex = null;
+      let ageIndex = null;
+      let sexIndex = null;
+      for (let i = 0; i < norms.nse.length; i++) {
+        if (
+          norms.nse[i][0] <= education &&
+          education <= norms.nse[i][1]
+        ) {
+          nseIndex = i;
+        }
+      }    
+      for (let i = 0; i < norms.age.length; i++) {        
+        if (
+          norms.age[i][0] <= age &&
+          age <= norms.age[i][1]
+        ) {
+          ageIndex = i;
+        }
+      }    
+      sexIndex = sex;
+      let superposicion = false;
+      if (norms.type === "superposicion") {
+        superposicion = true;
+      }
+      return [nseIndex, ageIndex, sexIndex, superposicion];
+    };
+
+    const getTestNorms = (education, age, sex, availableNorms, source, score) => {
+      const [selectedNorm] = availableNorms.filter((norm) => {
+        return norm.norm_id === source;
+      });
+      let [nseIndex, ageIndex, sexIndex] = setIndex(selectedNorm,education,age,sex);             
+      if (selectedNorm.sex.length===1) {
+        sexIndex = 0;
+      }    
+      const norms = selectedNorm["norms"][score] || null;      
+      let mean = null;
+      let standarDeviation = null;
+      if (norms) {        
+        mean = norms[nseIndex][sexIndex][ageIndex][0]        
+        standarDeviation = norms[nseIndex][sexIndex][ageIndex][1]        
+      }          
+      return [mean, standarDeviation];
+    };
+
+    const fetchTests = async () => {        
         if(activeTest!==''){
             try {
               const { data:test } = await axios.get(
@@ -53,14 +101,31 @@ const FormBox = ({activeTest}) => {
                 dataObject[field]=null
               })
               setData(dataObject)
-              const norm_id = test.versions[0].norms[0]
-              try {
-                const { data:norms } = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/norms/get/single/${norm_id}`
-                  );                  
-              } catch (error) {
-                console.log(error);
-              }
+              const normsData = []
+              // const norm_ids = test.versions[0].norms
+              // norm_ids.map(async (norm_id) => {                
+              //   try {
+              //     const { data:norms } = await axios.get(
+              //         `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/norms/get/single/${norm_id}`
+              //       );                    
+              //     normsData.push(norms)
+              //   } catch (error) {
+              //     console.log(error);
+              //   }                                 
+              // })
+
+              //SOLUCION TEMPORAL HASTA INCORPORAR SELECT DE NORMAS
+              const norm_id = test.versions[0].norms[0]                        
+                try {
+                  const { data:fetched_norms } = await axios.get(
+                      `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/norms/get/single/${norm_id}`
+                    );                    
+                  normsData.push(fetched_norms)
+                } catch (error) {
+                  console.log(error);
+                }                                               
+                setAvailableNorms(normsData)                
+                setNormSource(norm_id)                              
             } catch (error) {
               console.log(error);
             }
@@ -76,6 +141,15 @@ const FormBox = ({activeTest}) => {
         return segments.charAt(0).toUpperCase() + segments.slice(1);
     }
 
+    const scoreAll = () => {
+      const scoresObject = {};
+      Object.keys(data).map(score=>{
+        const norms = getTestNorms(education,age,sex,availableNorms,normSource,score)        
+        scoresObject[score]=Math.round((data[score]-norms[0])/norms[1]*10)/10
+      })                 
+      setResults(scoresObject)
+    }
+
     return (
         <div className={classes.root}>
             <h3>{title}</h3>
@@ -86,9 +160,14 @@ const FormBox = ({activeTest}) => {
                    <TextField id={field} type="number" label={formatName(field)} variant="outlined" />
                 </div>)
                 })}
-            <Button variant="contained" className={classes.btnGrad} onClick={() => setShowResults(true)}>Calcular puntajes</Button>     
+            <Button variant="contained" className={classes.btnGrad} onClick={() => {
+              setShowResults(true)
+              scoreAll()
+              }}>Calcular puntajes</Button>     
             </form>)}
-            {title!=='' && showResults && <Button variant="contained" className={classes.btnGrad} onClick={() => setShowResults(false)}>Ingresar puntajes</Button>}
+            {title!=='' && showResults && <Button variant="contained" className={classes.btnGrad} onClick={() => {
+              setShowResults(false)              
+              }}>Ingresar puntajes</Button>}
         </div>
     )
 }
