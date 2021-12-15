@@ -125,7 +125,8 @@ const FormBox = ({activeTest, education, age, sex}) => {
                   console.log(error);
                 }                                               
                 setAvailableNorms(normsData)                
-                setNormSource(norm_id)                              
+                setNormSource(norm_id)
+                setShowResults(false)                              
             } catch (error) {
               console.log(error);
             }
@@ -133,7 +134,7 @@ const FormBox = ({activeTest, education, age, sex}) => {
       };
     
       useEffect(() => {
-        fetchTests();
+        fetchTests();         
       }, [activeTest]);
 
     const formatName = (fieldName) => {
@@ -154,6 +155,13 @@ const FormBox = ({activeTest, education, age, sex}) => {
       setData({...data,[field]:value})
     }
 
+    const resetValues = () => {
+      const newData = data
+      Object.entries(newData).map(([k,v])=>{
+        newData[k]=''
+      })        
+    }
+
     return (
         <div className={classes.root}>
             <h3>{title}</h3>
@@ -161,15 +169,16 @@ const FormBox = ({activeTest, education, age, sex}) => {
             {fields.map((field,index)=>{
                 return(
                 <div key={index} className={classes.inputField}>
-                   <TextField id={field} type="number" label={formatName(field)} variant="outlined" value={data[field]} onChange={(e)=>handleInputChange(field,e.target.value)}/>
+                   <TextField id={field} type="number" label={formatName(field)} variant="outlined" onChange={(e)=>handleInputChange(field,e.target.value)}/>
                 </div>)
                 })}
             <Button variant="contained" className={classes.btnGrad} onClick={() => {
               setShowResults(true)
-              scoreAll()
+              scoreAll()              
               }}>Calcular puntajes</Button>     
             </form>)}
-            {title!=='' && showResults && <Button variant="contained" className={classes.btnGrad} onClick={() => {
+            {title!=='' && showResults && <Button variant="contained" className={classes.btnGrad} onClick={() => {              
+              resetValues()
               setShowResults(false)              
               }}>Ingresar puntajes</Button>}
         </div>
