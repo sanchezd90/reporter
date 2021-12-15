@@ -87,7 +87,7 @@ const Home = () => {
                     Comenzar
                   </Button>
                 </Link>
-                <Link href="/">
+                <Link href="/signup">
                   <Button variant="contained" className={classes.btnGrad}>
                     Registrarme
                   </Button>
