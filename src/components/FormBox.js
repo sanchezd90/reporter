@@ -37,17 +37,23 @@ const FormBox = ({activeTest}) => {
     const [title, setTitle] = useState('')
     const [fields, setFields] = useState([])
     const [showResults,setShowResults] = useState(false)
+    const [data, setData] = useState()
 
     const fetchTests = async () => {
         console.log(activeTest)
         if(activeTest!==''){
             try {
-              const { data } = await axios.get(
+              const { data:test } = await axios.get(
                 `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/tests/get/single/${activeTest}`
               );              
-              setTitle(data.fullName);
-              setFields(data.fields)
-              const norm_id = data.versions[0].norms[0]
+              setTitle(test.fullName);
+              setFields(test.fields)
+              const dataObject = {};
+              test.fields.map(field=>{
+                dataObject[field]=null
+              })
+              setData(dataObject)
+              const norm_id = test.versions[0].norms[0]
               try {
                 const { data:norms } = await axios.get(
                     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/norms/get/single/${norm_id}`
@@ -77,7 +83,7 @@ const FormBox = ({activeTest}) => {
             {fields.map((field,index)=>{
                 return(
                 <div key={index} className={classes.inputField}>
-                   <TextField id="outlined-basic" label={formatName(field)} variant="outlined" />
+                   <TextField id={field} type="number" label={formatName(field)} variant="outlined" />
                 </div>)
                 })}
             <Button variant="contained" className={classes.btnGrad} onClick={() => setShowResults(true)}>Calcular puntajes</Button>     
