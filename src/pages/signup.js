@@ -74,7 +74,7 @@ const SignUp = () => {
                 ¿Ya tenés un usuario?{" "}
                 <span className={classes.highlight}>
                 <Link href="/login">
-                  Ingresa acá
+                  Ingresá acá
                 </Link>
                 </span>
               </p>

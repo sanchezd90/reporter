@@ -51,7 +51,7 @@ const Login = () => {
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={6}>
             <h1 className={classes.title}>
-              Ingresa a <span className={classes.highlight}>Reporter</span>
+              Ingresá a <span className={classes.highlight}>Reporter</span>
             </h1>
             <Grid container spacing={3} justifyContent="center">
               <form className={classes.root} noValidate autoComplete="off">

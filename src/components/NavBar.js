@@ -166,7 +166,11 @@ export default function PrimarySearchAppBar() {
       >
         <Toolbar>
           <div style={{ marginLeft: "10px" }}>
-            <Image src={Logo} alt="logo-reporter" width={50} height={50} />
+            <Link href="/">
+            <a>
+              <Image src={Logo} alt="logo-reporter" width={50} height={50} />                       
+            </a>
+            </Link>
           </div>
           <div className={classes.grow} />
           <div className={classes.title}>
