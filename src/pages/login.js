@@ -7,6 +7,7 @@ import FunctionsIcon from "@material-ui/icons/Functions";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Link from "next/link";
 import TextField from "@material-ui/core/TextField";
+import UserForm from "../components/UserForm"
 
 const useStyles = makeStyles({
   title: {
@@ -49,20 +50,13 @@ const Login = () => {
       <NavBar />
       <div style={{ marginTop: "50px" }}>
         <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <h1 className={classes.title}>
               Ingresá a <span className={classes.highlight}>Reporter</span>
             </h1>
-            <Grid container spacing={3} justifyContent="center">
-              <form className={classes.root} noValidate autoComplete="off">
-                <div>
-                  <TextField id="email" label="Email" />
-                </div>
-                <div>
-                  <TextField id="password" label="Contraseña" />
-                </div>
-              </form>
-            </Grid>
+            <UserForm>
+
+            </UserForm>
             <div style={{ marginTop: "50px" }}>
               <Grid container justifyContent="space-evenly">
                 <Button variant="contained" className={classes.btnGrad}>
