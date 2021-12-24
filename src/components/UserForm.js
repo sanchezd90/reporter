@@ -45,18 +45,25 @@ const useStyles = makeStyles({
   },
 });
 
-const UserForm = () => {
+const UserForm = ({setEmail,setPass}) => {
   const classes = useStyles();
   const [values, setValues] = useState({
     amount: "",
     password: "",
+    email: "",
     weight: "",
     weightRange: "",
     showPassword: false,
-  });
+  });  
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+    if(prop==='email'){
+      setEmail(event.target.value)
+    }
+    if(prop==='password'){
+      setPass(event.target.value)
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -70,7 +77,11 @@ const UserForm = () => {
       <Grid item xs={4} style={{marginInline:'auto'}}>
         <FormControl required className={clsx(classes.margin, classes.textField)}>
           <InputLabel htmlFor="email">Email</InputLabel>
-          <Input id="email" style={{width:'220px'}}/>
+          <Input 
+            id="email"            
+            value={values.email}
+            onChange={handleChange("email")}
+            style={{width:'220px'}}/>
         </FormControl>
       </Grid>
       <Grid item xs={4} style={{marginInline:'auto'}}>
