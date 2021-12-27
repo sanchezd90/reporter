@@ -77,14 +77,14 @@ const SignUp = () => {
               Registrate en <span className={classes.highlight}>Reporter</span>
             </h1>
             {verifyMail ? (
-            <Grid container justifyContent="space-evenly">
-              <p>
+            <div >
+              <p className={classes.title}>
                 Hemos enviado un <span className={classes.highlight}>enlace de verificación</span> a <strong>{email}</strong>.                
               </p>
-              <p>
+              <p className={classes.title}>
                 Usa ese enlace para finalizar con el proceso de registro. 
               </p>
-            </Grid>
+            </div>
             ) : (
               <>
                 <UserForm setEmail={setEmail} setPass={setPass}></UserForm>
