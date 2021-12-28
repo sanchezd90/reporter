@@ -61,7 +61,9 @@ const SignUp = () => {
           pass: pass,
         }
       )
-      setVerifyMail(true);
+      if(response){        
+        setVerifyMail(true);
+      }
     } catch (error) {
       console.log(error);
     }

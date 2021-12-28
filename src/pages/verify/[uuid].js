@@ -5,10 +5,9 @@ import { useEffect } from "react";
 const Verify = () => {
     const router = useRouter()
 
-    const verifyUser = async () => {
-        console.log("toy")
-        console.log(router.query.uuid)
-        try {
+    const verifyUser = async () => {            
+        try {  
+            console.log(router.query.uuid)          
             if(router.query.uuid){
                 const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/users/verify/${router.query.uuid}`,
@@ -24,10 +23,11 @@ const Verify = () => {
         }
       };
 
-    useEffect(() => verifyUser,[])
+    useEffect(() => verifyUser,[router.query.uuid])
 
     return (
-        <div>        
+        <div>    
+                                                             
         </div>
     )
 }
