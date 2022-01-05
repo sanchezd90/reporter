@@ -10,6 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import UserForm from "../components/UserForm";
 import axios from "axios";
 import { useState } from "react";
+import Cookies from "universal-cookie";
 
 const useStyles = makeStyles({
   title: {
@@ -47,10 +48,12 @@ const useStyles = makeStyles({
 
 const SignUp = () => {
   const classes = useStyles();
+  const cookies = new Cookies();
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
   const [registryError, setRegistryError] = useState(false);
   const [verifyMail, setVerifyMail] = useState(false);
+  
 
   const createUser = async () => {
     try {
@@ -61,7 +64,8 @@ const SignUp = () => {
           pass: pass,
         }
       )
-      if(response){        
+      if(response){  
+        cookies.set('user',response.data.token)      
         setVerifyMail(true);
       }
     } catch (error) {

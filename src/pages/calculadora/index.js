@@ -11,6 +11,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Cookies from "universal-cookie";
+import jwt from "jsonwebtoken";
 
 const useStyles = makeStyles({
   header: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles({
 });
 
 const Calculadora = () => {
+  const cookies = new Cookies();
   const classes = useStyles();
   const [tests, setTests] = useState([]);
   const [activeTest, setActiveTest] = useState("");
@@ -51,6 +54,7 @@ const Calculadora = () => {
   };
 
   useEffect(() => {
+    console.log(jwt.decode(cookies.get('user')));
     fetchTests();
   }, []);
 
