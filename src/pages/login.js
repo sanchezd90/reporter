@@ -7,11 +7,19 @@ import FunctionsIcon from "@material-ui/icons/Functions";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Link from "next/link";
 import TextField from "@material-ui/core/TextField";
+import axios from "axios";
+import { useState } from "react";
 import UserForm from "../components/UserForm"
+import { useRouter } from "next/router"
+import Cookies from "universal-cookie";
 
 const useStyles = makeStyles({
   title: {
     textAlign: "center",
+  },
+  error: {
+    textAlign: "center",
+    color:"#EF6C33"
   },
   paragraph: {
     marginLeft: "10px",
@@ -45,6 +53,41 @@ const useStyles = makeStyles({
 
 const Login = () => {
   const classes = useStyles();
+  const router = useRouter();
+  const cookies = new Cookies();   
+  const [email, setEmail] = useState();
+  const [pass, setPass] = useState();
+  const [authError, setAuthError] = useState();
+
+  const errorMessage = {
+    'user not found':'El usuario no se encuentra registrado',
+    'wrong pass':'Contraseña incorrecta',
+  }
+
+  const login = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/users/login`,
+        {
+          email: email,
+          pass: pass,
+        }
+      )
+      if(response){  
+        console.log(response)
+        if(response.data.token){
+          setAuthError()
+          cookies.set('user',response.data.token)
+          router.push("/calculadora")        
+        }else{
+          setAuthError(response.data.msg)
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <NavBar />
@@ -54,12 +97,11 @@ const Login = () => {
             <h1 className={classes.title}>
               Ingresá a <span className={classes.highlight}>Reporter</span>
             </h1>
-            <UserForm>
-
-            </UserForm>
+            <UserForm setEmail={setEmail} setPass={setPass}></UserForm>
+            {authError && <p className={classes.error}>{errorMessage[authError]}</p>}
             <div style={{ marginTop: "50px" }}>
               <Grid container justifyContent="space-evenly">
-                <Button variant="contained" className={classes.btnGrad}>
+                <Button variant="contained" className={classes.btnGrad} onClick={() => login()}>
                   Iniciar sesión
                 </Button>
               </Grid>
