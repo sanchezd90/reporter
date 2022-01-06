@@ -119,7 +119,7 @@ export default function PrimarySearchAppBar({ user, setUser }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const loggout = () => {
+  const logout = () => {
     setUser()
     cookies.remove('user')
     router.push("/")
@@ -136,9 +136,8 @@ export default function PrimarySearchAppBar({ user, setUser }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Evaluaciones</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
-      <MenuItem onClick={loggout}>Cerrar sesión</MenuItem>
+      <MenuItem onClick={()=>router.push("/perfil")}>Perfil</MenuItem>
+      <MenuItem onClick={logout}>Cerrar sesión</MenuItem>
     </Menu>
   );
 
@@ -188,19 +187,7 @@ export default function PrimarySearchAppBar({ user, setUser }) {
             <>
               <div className={classes.title}>
                 {user.email}
-              </div>
-              <div className={classes.sectionDesktop}>
-                <IconButton
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-              </div>
+              </div>              
             </>
           ) : (
             <>

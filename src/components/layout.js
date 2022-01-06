@@ -27,7 +27,7 @@ export default function Layout({ children }) {
       <NavBar user={user?.user} setUser={setUser}/>
       <Grid container style={{marginTop:'50px'}}>
         <Grid item xs={2} style={{marginLeft:'25px',height:'100%'}}>
-          <Sidebar user={user?.user}/>
+          <Sidebar user={user?.user} setUser={setUser}/>
         </Grid>
         <Grid item xs={9} style={{height:'100%'}}>{children}</Grid>
       </Grid>
