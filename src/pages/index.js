@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,6 +7,8 @@ import CreateIcon from "@material-ui/icons/Create";
 import FunctionsIcon from "@material-ui/icons/Functions";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Link from "next/link";
+import Cookies from "universal-cookie";
+import jwt from "jsonwebtoken";
 
 const useStyles = makeStyles({
   title: {
@@ -43,9 +46,16 @@ const useStyles = makeStyles({
 
 const Home = () => {
   const classes = useStyles();
+  const cookies = new Cookies();
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    setUser(jwt.decode(cookies.get('user')));    
+  }, []);
+
   return (
     <>
-      <NavBar />
+      <NavBar user={user?.user} setUser={setUser}/>
       <div style={{ marginTop: "50px" }}>
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={6}>
@@ -87,11 +97,11 @@ const Home = () => {
                     Comenzar
                   </Button>
                 </Link>
-                <Link href="/signup">
+                {!user && <Link href="/signup">
                   <Button variant="contained" className={classes.btnGrad}>
                     Registrarme
                   </Button>
-                </Link>
+                </Link>}
               </Grid>
             </div>
           </Grid>

@@ -17,6 +17,8 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import Image from "next/image";
 import Logo from "../../public/images/reporter-logo.png";
 import Link from "next/link";
+import Cookies from "universal-cookie";
+import { useRouter } from "next/router"
 
 const useStyles = makeStyles((theme) => ({
   abRoot: {
@@ -90,8 +92,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({ user, setUser }) {
   const classes = useStyles();
+  const cookies = new Cookies();
+  const router = useRouter()   
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -115,6 +119,12 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const loggout = () => {
+    setUser()
+    cookies.remove('user')
+    router.push("/")
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -128,6 +138,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Evaluaciones</MenuItem>
       <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
+      <MenuItem onClick={loggout}>Cerrar sesión</MenuItem>
     </Menu>
   );
 
@@ -167,29 +178,38 @@ export default function PrimarySearchAppBar() {
         <Toolbar>
           <div style={{ marginLeft: "10px" }}>
             <Link href="/">
-            <a>
-              <Image src={Logo} alt="logo-reporter" width={50} height={50} />                       
-            </a>
+              <a>
+                <Image src={Logo} alt="logo-reporter" width={50} height={50} />
+              </a>
             </Link>
           </div>
           <div className={classes.grow} />
-          <div className={classes.title}>
-            <Link href="/login">
-              Iniciar sesión
-            </Link>
-          </div>
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
+          {user ? (
+            <>
+              <div className={classes.title}>
+                {user.email}
+              </div>
+              <div className={classes.sectionDesktop}>
+                <IconButton
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={classes.title}>
+                <Link href="/login">Iniciar sesión</Link>
+              </div>              
+            </>
+          )}
+
           <div className={classes.sectionMobile}>
             <IconButton
               aria-label="show more"

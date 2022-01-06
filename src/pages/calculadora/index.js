@@ -41,6 +41,7 @@ const Calculadora = () => {
   const [age, setAge] = useState(16);
   const [education, setEducation] = useState(0);
   const [sex, setSex] = useState(1);
+  const [user, setUser] = useState();
 
   const fetchTests = async () => {
     try {
@@ -53,8 +54,7 @@ const Calculadora = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(jwt.decode(cookies.get('user')));
+  useEffect(() => {    
     fetchTests();
   }, []);
 
