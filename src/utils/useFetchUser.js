@@ -4,7 +4,9 @@ import Cookies from "universal-cookie";
 import jwt from "jsonwebtoken";
 
 export const useFetchUser = ({    
-    setUser,        
+    setUser,     
+    setValue,
+    setInputValue    
 }) => {    
     const cookies = new Cookies();
     const fetch = async () => {  
@@ -18,6 +20,10 @@ export const useFetchUser = ({
                     }
                 );      
                 setUser(data.user);
+                if(data.user.country){
+                    setValue(data.user.country)
+                    setInputValue(data.user.country) 
+                }
                 } catch (error) {
                 console.log(error);
                 }
