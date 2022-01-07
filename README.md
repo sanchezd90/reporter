@@ -1,4 +1,4 @@
-Reporter
+## Reporter
 
 Reporter is an app for aiding neuropsychological assessment practice. It allows users to compute Z scores out of different normative data, generate reports and track subject data. This is an ongoing project. 
 
