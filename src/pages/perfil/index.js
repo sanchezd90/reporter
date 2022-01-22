@@ -78,7 +78,7 @@ const Perfil = () => {
     })
     setUser({...user,country:value})
     }catch(error){
-      console.log(error)
+      console.log(error.response.data)
     }
   }
 
