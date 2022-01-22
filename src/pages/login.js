@@ -8,10 +8,11 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import Link from "next/link";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
-import { useState } from "react";
-import UserForm from "../components/UserForm"
-import { useRouter } from "next/router"
+import { useState, useEffect } from "react";
+import UserForm from "../components/UserForm";
+import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
+import ErrorMessage from "../Components/ErrorMessage";
 
 const useStyles = makeStyles({
   title: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   },
   error: {
     textAlign: "center",
-    color:"#EF6C33"
+    color: "#EF6C33",
   },
   paragraph: {
     marginLeft: "10px",
@@ -54,15 +55,11 @@ const useStyles = makeStyles({
 const Login = () => {
   const classes = useStyles();
   const router = useRouter();
-  const cookies = new Cookies();   
+  const cookies = new Cookies();
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
-  const [authError, setAuthError] = useState();
-
-  const errorMessage = {
-    'user not found':'El usuario no se encuentra registrado',
-    'wrong pass':'Contraseña incorrecta',
-  }
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState();
 
   const login = async () => {
     try {
@@ -72,21 +69,22 @@ const Login = () => {
           email: email,
           pass: pass,
         }
-      )
-      if(response){  
-        console.log(response)
-        if(response.data.token){
-          setAuthError()
-          cookies.set('user',response.data.token)
-          router.push("/calculadora")        
-        }else{
-          setAuthError(response.data.msg)
+      );
+      if (response) {
+        console.log(response);
+        if (response.data.token) {
+          setError();
+          cookies.set("user", response.data.token);
+          router.push("/calculadora");
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error) {      
+      setError(error.response.data);
+      setShowError(true);
     }
-  }
+  };
+
+  useEffect(() => setShowError(false),[email,pass])
 
   return (
     <>
@@ -98,22 +96,34 @@ const Login = () => {
               Ingresá a <span className={classes.highlight}>Reporter</span>
             </h1>
             <UserForm setEmail={setEmail} setPass={setPass}></UserForm>
-            {authError && <p className={classes.error}>{errorMessage[authError]}</p>}
+            {showError && (
+              <Grid
+                container
+                justifyContent="space-evenly"
+                style={{ marginTop: "50px" }}
+              >
+                <div>
+                  <ErrorMessage error={error} />
+                </div>
+              </Grid>
+            )}
             <div style={{ marginTop: "50px" }}>
               <Grid container justifyContent="space-evenly">
-                <Button variant="contained" className={classes.btnGrad} onClick={() => login()}>
+                <Button
+                  variant="contained"
+                  className={classes.btnGrad}
+                  onClick={() => login()}
+                >
                   Iniciar sesión
                 </Button>
               </Grid>
               <Grid container justifyContent="space-evenly">
-              <p>
-                ¿Aún no tenés un usuario?{" "}
-                <span className={classes.highlight}>
-                <Link href="/signup">
-                  Registrate
-                </Link>
-                </span>
-              </p>
+                <p>
+                  ¿Aún no tenés un usuario?{" "}
+                  <span className={classes.highlight}>
+                    <Link href="/signup">Registrate</Link>
+                  </span>
+                </p>
               </Grid>
             </div>
           </Grid>

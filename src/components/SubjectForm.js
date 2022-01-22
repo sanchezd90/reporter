@@ -88,7 +88,7 @@ const SubjectForm = ({ setShowForm, showNotify, setSubject, action, subject }) =
       }
     } catch (error) {      
       console.log(error.response.data);
-      setError(error.response.data.message)
+      setError(error.response.data)
       setShowError(true)
     }
   };
@@ -105,7 +105,7 @@ const SubjectForm = ({ setShowForm, showNotify, setSubject, action, subject }) =
       }
     } catch (error) {      
       console.log(error.response.data);
-      setError(error.response.data.message)
+      setError(error.response.data)
       setShowError(true)
     }
   };
@@ -122,7 +122,7 @@ const SubjectForm = ({ setShowForm, showNotify, setSubject, action, subject }) =
       }
     } catch (error) {      
       console.log(error.response.data);
-      setError(error.response.data.message)
+      setError(error.response.data)
       setShowError(true)
     }
   };

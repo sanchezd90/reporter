@@ -9,8 +9,9 @@ import Link from "next/link";
 import TextField from "@material-ui/core/TextField";
 import UserForm from "../components/UserForm";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
+import ErrorMessage from "../Components/ErrorMessage";
 
 const useStyles = makeStyles({
   title: {
@@ -51,9 +52,9 @@ const SignUp = () => {
   const cookies = new Cookies();
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
-  const [registryError, setRegistryError] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState();
   const [verifyMail, setVerifyMail] = useState(false);
-  
 
   const createUser = async () => {
     try {
@@ -63,15 +64,21 @@ const SignUp = () => {
           email: email,
           pass: pass,
         }
-      )
-      if(response){  
-        cookies.set('user',response.data.token)      
+      );
+      if (response) {
+        console.log(response);
+        cookies.set("user", response.data.token);
         setVerifyMail(true);
+        setError();
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      setError(error.response.data);
+      setShowError(true);
     }
   };
+
+  useEffect(() => setShowError(false),[email,pass])
 
   return (
     <>
@@ -83,19 +90,30 @@ const SignUp = () => {
               Registrate en <span className={classes.highlight}>Reporter</span>
             </h1>
             {verifyMail ? (
-            <div >
-              <p className={classes.title}>
-                Hemos enviado un <span className={classes.highlight}>enlace de verificación</span> a <strong>{email}</strong>.                
-              </p>
-              <p className={classes.title}>
-                Usa ese enlace para finalizar con el proceso de registro. 
-              </p>
-            </div>
+              <div>
+                <p className={classes.title}>
+                  Hemos enviado un{" "}
+                  <span className={classes.highlight}>
+                    enlace de verificación
+                  </span>{" "}
+                  a <strong>{email}</strong>.
+                </p>
+                <p className={classes.title}>
+                  Usa ese enlace para finalizar con el proceso de registro.
+                </p>
+              </div>
             ) : (
               <>
                 <UserForm setEmail={setEmail} setPass={setPass}></UserForm>
+                {showError && (
+                  <Grid container justifyContent="space-evenly" style={{ marginTop: "50px" }}>                    
+                      <div>
+                        <ErrorMessage error={error} />
+                      </div>
+                      </Grid>
+                    )}
                 <div style={{ marginTop: "50px" }}>
-                  <Grid container justifyContent="space-evenly">
+                  <Grid container justifyContent="space-evenly">                    
                     <Button
                       variant="contained"
                       className={classes.btnGrad}
