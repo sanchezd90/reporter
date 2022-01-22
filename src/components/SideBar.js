@@ -40,8 +40,8 @@ const SideBar = ({ user, setUser }) => {
   
   const logout = () => {  
     setUser();  
-    cookies.remove("user");
     router.push("/");
+    cookies.remove("user");
   };
 
   return (

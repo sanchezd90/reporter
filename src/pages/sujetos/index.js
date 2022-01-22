@@ -154,6 +154,7 @@ const Sujetos = () => {
             onChange={(e) => {
               setSubjectId(e.target.value);
               setShowNotFound(false)
+              setSubject()
             }}
           />
           <IconButton
@@ -187,7 +188,7 @@ const Sujetos = () => {
         {showNotFound && <Grid container>
             <h2 className={classes.message}>No hay sujetos registrados con este DNI</h2>          
         </Grid>}
-        <Grid container style={{ marginLeft: "30px" }}>
+        <Grid container style={{ marginLeft: "30px", marginTop:'20px' }}>
           {subject && (
             <SubjectForm
               setShowForm={setShowForm}
