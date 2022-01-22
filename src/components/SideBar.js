@@ -69,6 +69,11 @@ const SideBar = ({ user, setUser }) => {
         </Link>
         {user && (
           <>
+            <Link href="/sujetos">
+              <Button variant="contained" className={classes.btnGrad}>
+                Sujetos
+              </Button>
+            </Link>
             <Link href="/perfil">
               <Button variant="contained" className={classes.btnGrad}>
                 Perfil
