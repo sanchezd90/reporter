@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
@@ -55,7 +55,7 @@ const useStyles = makeStyles({
   },
 });
 
-const SubjectForm = ({ setShowForm, showNotify }) => {
+const SubjectForm = ({ setShowForm, showNotify, setSubject, action, subject }) => {
   const classes = useStyles();  
   const [values, setValues] = useState({
     first_name: "",
@@ -66,6 +66,7 @@ const SubjectForm = ({ setShowForm, showNotify }) => {
     sex: "femenino",
     handedness: "derecha",
   });
+  
   const [showError,setShowError] = useState(false)
   const [error,setError] = useState()
 
@@ -82,7 +83,7 @@ const SubjectForm = ({ setShowForm, showNotify }) => {
       );
       console.log(response);
       if (response) {
-        showNotify()
+        showNotify(action)
         setShowForm(false);
       }
     } catch (error) {      
@@ -92,11 +93,64 @@ const SubjectForm = ({ setShowForm, showNotify }) => {
     }
   };
 
+  const updateUser = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/subjects/update`,
+        values
+      );
+      console.log(response);
+      if (response) {
+        showNotify(action)        
+      }
+    } catch (error) {      
+      console.log(error.response.data);
+      setError(error.response.data.message)
+      setShowError(true)
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/subjects/delete/${values.subject_id}`,        
+      );
+      console.log(response);
+      if (response) {
+        showNotify(action)
+        setSubject();
+      }
+    } catch (error) {      
+      console.log(error.response.data);
+      setError(error.response.data.message)
+      setShowError(true)
+    }
+  };
+
+  useEffect(() => {
+    if(action==='edit'){
+      setValues(subject)
+    }
+  },[])
+
+  const cancelCreate = () => {
+    setValues({
+      first_name: "",
+      last_name: "",
+      email: "",
+      subject_id: "",
+      birth_date: "1950-01-01",
+      sex: "femenino",
+      handedness: "derecha",
+    });
+    setShowForm(false);
+  }
+
   return (
     
     <Grid container spacing={3} direction="column">      
       <Grid item xs={4} style={{ marginLeft: "15px" }}>
-        <FormControl
+        {action==='create' && <FormControl
           required
           className={clsx(classes.margin, classes.textField)}
         >
@@ -107,7 +161,7 @@ const SubjectForm = ({ setShowForm, showNotify }) => {
             onChange={handleChange("subject_id")}
             style={{ width: "220px" }}
           />
-        </FormControl>
+        </FormControl>}
         <FormControl
           required
           className={clsx(classes.margin, classes.textField)}
@@ -223,19 +277,14 @@ const SubjectForm = ({ setShowForm, showNotify }) => {
               variant="contained"
               className={classes.btnGrad}
               onClick={() => {
-                setValues({
-                  first_name: "",
-                  last_name: "",
-                  email: "",
-                  subject_id: "",
-                  birth_date: "1950-01-01",
-                  sex: "femenino",
-                  handedness: "derecha",
-                });
-                setShowForm(false);
+                if(action==='create'){
+                  cancelCreate()
+                }else if(action==='edit'){
+                  updateUser()
+                }
               }}
             >
-              Cancelar
+              {action==='create' ? 'Cancelar':'Guardar'}
             </Button>
           </Grid>
           <Grid item xs={4}>
@@ -243,11 +292,15 @@ const SubjectForm = ({ setShowForm, showNotify }) => {
               variant="contained"
               className={classes.btnGrad}
               onClick={() => {
-                registerUser();
+                if(action==='create'){
+                  registerUser()
+                }else if(action==='edit'){
+                  deleteUser()
+                }
               }}
               disabled={showError}
-            >
-              Agregar
+            >              
+              {action==='create' ? 'Agregar':'Eliminar'}
             </Button>
           </Grid>
         </Grid>

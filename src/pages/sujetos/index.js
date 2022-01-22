@@ -82,22 +82,44 @@ const useStyles = makeStyles({
     height: 28,
     margin: 4,
   },
+  message: {
+    marginInline: "auto",
+    color: "#0C4A60"
+  }
 });
 
 const Sujetos = () => {
   const classes = useStyles();
-  const [user, setUser] = useState();
-  const [subject, setSubject] = useState();
   const [showForm, setShowForm] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const notify = () => toast.success("Sujeto agreado exitosamente");
+  const [subject, setSubject] = useState();
+  const [subjectId, setSubjectId] = useState("");
+  const notifyCreate = () => toast.success("Sujeto agreado exitosamente");
+  const notifyEdit = () => toast.success("Los cambios fueron guardados");
+  const [showNotFound,setShowNotFound] = useState(false);
 
-  useFetchUser({
-    setUser,
-  });
+  const showNotify = (action) => {
+    if (action === "create") {
+      notifyCreate();
+    } else {
+      notifyEdit();
+    }
+  };
 
-  const showNotify = () => {
-    notify();
+  const fetchSubject = async () => {
+    if (subjectId !== "") {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/subjects/get/single/${subjectId}`
+        );
+        if (response) {
+          setSubject(response.data);
+        }
+      } catch (error) {
+        setSubject();
+        setShowNotFound(true);
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -128,11 +150,20 @@ const Sujetos = () => {
             className={classes.input}
             placeholder="Buscar por DNI"
             inputProps={{ "aria-label": "Buscar por DNI" }}
+            value={subjectId}
+            onChange={(e) => {
+              setSubjectId(e.target.value);
+              setShowNotFound(false)
+            }}
           />
           <IconButton
-            type="submit"
+            type="button"
             className={classes.iconButton}
             aria-label="search"
+            onClick={() => {
+              setShowForm(false);
+              fetchSubject();
+            }}
           >
             <SearchIcon />
           </IconButton>
@@ -142,15 +173,38 @@ const Sujetos = () => {
               color="primary"
               className={classes.iconButton}
               aria-label="add"
-              onClick={() => setShowForm(true)}
+              onClick={() => {
+                setSubject();
+                setSubjectId("");
+                setShowForm(true);
+                setShowNotFound(false)
+              }}
             >
               <AddCircleIcon />
             </IconButton>
           </Tooltip>
         </Paper>
+        {showNotFound && <Grid container>
+            <h2 className={classes.message}>No hay sujetos registrados con este DNI</h2>          
+        </Grid>}
         <Grid container style={{ marginLeft: "30px" }}>
+          {subject && (
+            <SubjectForm
+              setShowForm={setShowForm}
+              setSubject={setSubject}
+              showNotify={showNotify}
+              action={"edit"}
+              subject={subject}
+            />
+          )}
           {showForm && (
-            <SubjectForm setShowForm={setShowForm} showNotify={showNotify} />
+            <SubjectForm
+              setShowForm={setShowForm}
+              setSubject={setSubject}
+              showNotify={showNotify}
+              action={"create"}
+              subject={null}
+            />
           )}
         </Grid>
       </Layout>
