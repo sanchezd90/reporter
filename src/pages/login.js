@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import UserForm from "../components/UserForm";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
-import ErrorMessage from "../Components/ErrorMessage";
+import ErrorMessage from "../components/ErrorMessage";
 
 const useStyles = makeStyles({
   title: {

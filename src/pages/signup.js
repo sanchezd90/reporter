@@ -11,7 +11,7 @@ import UserForm from "../components/UserForm";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
-import ErrorMessage from "../Components/ErrorMessage";
+import ErrorMessage from "../components/ErrorMessage";
 
 const useStyles = makeStyles({
   title: {
